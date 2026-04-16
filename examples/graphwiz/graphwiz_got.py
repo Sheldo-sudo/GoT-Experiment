@@ -3,15 +3,25 @@ import datetime
 import json
 import logging
 import os
+import sys
 from typing import Any, Callable, Dict, List, Optional
+
+# Ensure local repository source has higher priority than site-packages.
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
 
 from graph_of_thoughts import controller, language_models, operations, parser, prompter
 
 # 兼容从 examples 目录或仓库根目录执行
 try:
     from . import utils
+    from . import trajectory_exporter
+    from . import reward_builder
 except ImportError:
     import utils
+    import trajectory_exporter
+    import reward_builder
 
 
 DECOMPOSE_PROMPT = """You are solving a graph reasoning problem.
@@ -440,6 +450,7 @@ def run(
         os.path.dirname(__file__),
         "../../graph_of_thoughts/language_models/config.json",
     )
+    trajectories: List[Dict[str, Any]] = []
 
     for sample in selected_data:
         logging.info("Running sample_id=%s task=%s", sample["id"], sample["task"])
@@ -455,11 +466,19 @@ def run(
 
             logging.info("Running method=%s budget_left=%s", method.__name__, budget)
 
-            lm = language_models.ChatGPT(
-                lm_config_path,
-                model_name=lm_name,
-                cache=True,
-            )
+            lm_builder = getattr(language_models, "create_language_model", None)
+            if callable(lm_builder):
+                lm = lm_builder(
+                    lm_config_path,
+                    model_name=lm_name,
+                    cache=True,
+                )
+            else:
+                lm = language_models.ChatGPT(
+                    lm_config_path,
+                    model_name=lm_name,
+                    cache=True,
+                )
 
             operations_graph = method()
 
@@ -493,7 +512,53 @@ def run(
                 f"{sample['id']}.json",
             )
             executor.output_graph(out_path)
+
+            final_answer = ""
+            try:
+                final_groups = executor.get_final_thoughts()
+                for group in final_groups:
+                    for thought in group:
+                        if isinstance(getattr(thought, "state", None), dict):
+                            cur = thought.state.get("current", "")
+                            if cur:
+                                final_answer = cur
+            except Exception:
+                pass
+
+            trajectory = trajectory_exporter.build_trajectory_record(
+                sample=sample,
+                routed_task=route_task_name(sample.get("task", "")),
+                output_json_path=out_path,
+                query_history=getattr(lm, "query_history", []),
+                final_answer=final_answer,
+                is_correct=bool(
+                    utils.graphwiz_ground_truth(
+                        {
+                            "task": sample.get("task", ""),
+                            "original": sample.get("query", ""),
+                            "gold": sample.get("answer", ""),
+                            "current": final_answer,
+                        }
+                    )
+                ),
+                error_message="",
+                prompt_tokens=getattr(lm, "prompt_tokens", 0),
+                completion_tokens=getattr(lm, "completion_tokens", 0),
+                cost=getattr(lm, "cost", 0.0),
+                search_score_fn=utils.graphwiz_format_score,
+                final_validator_fn=None,
+                ground_truth_fn=utils.graphwiz_ground_truth,
+            )
+            reward_info = reward_builder.compute_trajectory_reward(trajectory)
+            trajectory["reward"] = reward_info["reward"]
+            trajectory["reward_components"] = reward_info["components"]
+            trajectories.append(trajectory)
             budget -= lm.cost
+
+    if trajectories:
+        trajectory_exporter.export_trajectories_jsonl(
+            os.path.join(results_folder, "trajectories.jsonl"), trajectories
+        )
 
     return orig_budget - budget
 

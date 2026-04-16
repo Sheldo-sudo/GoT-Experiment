@@ -1,0 +1,22 @@
+{
+  "graphwiz_pref": {
+    "file_name": "../data/graphwiz_pref.jsonl",
+    "columns": {
+      "prompt": "instruction",
+      "query": "input",
+      "chosen": "chosen",
+      "rejected": "rejected"
+    }
+  }
+}
+{
+  "graphwiz_pref": {
+    "file_name": "../data/graphwiz_pref.jsonl",
+    "columns": {
+      "prompt": "instruction",
+      "query": "input",
+      "chosen": "chosen",
+      "rejected": "rejected"
+    }
+  }
+}

@@ -82,8 +82,26 @@ class ChatGPT(AbstractLanguageModel):
         :return: Response(s) from the OpenAI model.
         :rtype: Dict
         """
+        before_prompt_tokens = self.prompt_tokens
+        before_completion_tokens = self.completion_tokens
+        before_cost = self.cost
+
         if self.cache and query in self.response_cache:
-            return self.response_cache[query]
+            cached = self.response_cache[query]
+            try:
+                cached_texts = self.get_response_texts(cached)
+            except Exception:
+                cached_texts = []
+            self.record_query_event(
+                prompt=query,
+                responses=cached_texts,
+                num_responses=num_responses,
+                prompt_tokens_delta=0,
+                completion_tokens_delta=0,
+                cost_delta=0.0,
+                meta={"cache_hit": True, "backend": "remote_openai_compatible"},
+            )
+            return cached
 
         if num_responses == 1:
             response = self.chat([{"role": "user", "content": query}], num_responses)
@@ -108,6 +126,23 @@ class ChatGPT(AbstractLanguageModel):
 
         if self.cache:
             self.response_cache[query] = response
+
+        try:
+            texts = self.get_response_texts(response)
+        except Exception:
+            texts = []
+
+        self.record_query_event(
+            prompt=query,
+            responses=texts,
+            num_responses=num_responses,
+            prompt_tokens_delta=max(0, self.prompt_tokens - before_prompt_tokens),
+            completion_tokens_delta=max(
+                0, self.completion_tokens - before_completion_tokens
+            ),
+            cost_delta=max(0.0, self.cost - before_cost),
+            meta={"cache_hit": False, "backend": "remote_openai_compatible"},
+        )
         return response
 
     @backoff.on_exception(backoff.expo, OpenAIError, max_time=10, max_tries=6)

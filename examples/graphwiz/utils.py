@@ -4,6 +4,7 @@ import json
 import os
 import re
 from typing import Any, Dict, List, Optional
+from collections import deque
 
 from datasets import get_dataset_config_names, load_dataset
 
@@ -530,3 +531,168 @@ def graphwiz_ground_truth(state: Dict[str, Any]) -> bool:
     if not g or not p:
         return False
     return g == p or g in p or p in g
+
+
+def canonical_task_name(task: str) -> str:
+    t = str(task or "").strip().lower()
+    alias = {
+        "shortest": "shortest_path",
+        "shortestpath": "shortest_path",
+        "shortest_path": "shortest_path",
+        "topological": "topology",
+        "topological_sorting": "topology",
+    }
+    return alias.get(t, t)
+
+
+def validate_yesno_response(state: Dict[str, Any]) -> bool:
+    return extract_yes_no(state.get("current", "")) is not None
+
+
+def extract_sequence_from_text(text: str) -> Optional[List[int]]:
+    s = clean_response(text or "")
+    if not s:
+        return None
+
+    # 1) Prefer last bracketed list
+    bracket_matches = re.findall(r"\[([^\[\]]+)\]", s, flags=re.S)
+    for content in reversed(bracket_matches):
+        nums = re.findall(r"-?\d+", content)
+        if nums:
+            return [int(x) for x in nums]
+
+    # 2) Arrow-style path
+    if "->" in s:
+        nums = re.findall(r"-?\d+", s)
+        if nums:
+            return [int(x) for x in nums]
+
+    return None
+
+
+def parse_graph_from_query(query: str) -> Dict[str, Any]:
+    text = str(query or "")
+    low = text.lower()
+
+    directed_edges = re.findall(r"\((\d+)\s*->\s*(\d+)\)", text)
+    undirected_edges = re.findall(r"\((\d+)\s*,\s*(\d+)\)", text)
+
+    if directed_edges:
+        directed = True
+        raw_edges = directed_edges
+    else:
+        raw_edges = undirected_edges
+        if "undirected graph" in low:
+            directed = False
+        elif "directed graph" in low or "digraph" in low:
+            directed = True
+        else:
+            directed = False
+
+    edges = []
+    nodes = set()
+    for a_str, b_str in raw_edges:
+        a, b = int(a_str), int(b_str)
+        edges.append((a, b))
+        nodes.add(a)
+        nodes.add(b)
+
+    range_match = re.search(r"numbered\s+from\s+(\d+)\s+to\s+(\d+)", low)
+    if range_match:
+        lo = int(range_match.group(1))
+        hi = int(range_match.group(2))
+        if lo <= hi:
+            nodes.update(range(lo, hi + 1))
+        else:
+            nodes.update(range(hi, lo + 1))
+
+    return {
+        "nodes": sorted(nodes),
+        "edges": edges,
+        "directed": directed,
+    }
+
+
+def build_adj(graph: Dict[str, Any], force_undirected: bool = False) -> Dict[int, List]:
+    nodes = graph.get("nodes", [])
+    adj = {u: [] for u in nodes}
+    directed = bool(graph.get("directed", False)) and not force_undirected
+
+    for edge in graph.get("edges", []):
+        if len(edge) >= 2:
+            u, v = int(edge[0]), int(edge[1])
+            w = 1.0
+            if len(edge) >= 3:
+                try:
+                    w = float(edge[2])
+                except Exception:
+                    w = 1.0
+            adj.setdefault(u, []).append((v, w))
+            adj.setdefault(v, [])
+            if not directed:
+                adj[v].append((u, w))
+    return adj
+
+
+def _extract_node_pair_for_connectivity(query: str) -> Optional[List[int]]:
+    low = str(query or "").lower()
+    patterns = [
+        r"path\s+between\s+node\s+(\d+)\s+and\s+node\s+(\d+)",
+        r"between\s+node\s+(\d+)\s+and\s+node\s+(\d+)",
+        r"from\s+node\s+(\d+)\s+to\s+node\s+(\d+)",
+        r"from\s+(\d+)\s+to\s+(\d+)",
+    ]
+    for p in patterns:
+        m = re.search(p, low)
+        if m:
+            return [int(m.group(1)), int(m.group(2))]
+    return None
+
+
+def graph_connectivity_truth(query: str) -> Optional[bool]:
+    graph = parse_graph_from_query(query)
+    pair = _extract_node_pair_for_connectivity(query)
+    if not pair:
+        return None
+    source, target = pair
+    if source == target:
+        return True
+
+    adj = build_adj(graph, force_undirected=True)
+    if source not in adj or target not in adj:
+        return False
+
+    seen = {source}
+    q = deque([source])
+    while q:
+        u = q.popleft()
+        for v, _ in adj.get(u, []):
+            if v == target:
+                return True
+            if v not in seen:
+                seen.add(v)
+                q.append(v)
+    return False
+
+
+def graph_bipartite_truth(query: str) -> Optional[bool]:
+    graph = parse_graph_from_query(query)
+    if not graph.get("nodes"):
+        return None
+
+    adj = build_adj(graph, force_undirected=True)
+    color: Dict[int, int] = {}
+    for start in graph["nodes"]:
+        if start in color:
+            continue
+        color[start] = 0
+        q = deque([start])
+        while q:
+            u = q.popleft()
+            for v, _ in adj.get(u, []):
+                if v not in color:
+                    color[v] = 1 - color[u]
+                    q.append(v)
+                elif color[v] == color[u]:
+                    return False
+    return True

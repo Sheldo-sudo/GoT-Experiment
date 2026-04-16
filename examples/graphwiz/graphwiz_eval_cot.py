@@ -5,8 +5,14 @@ import importlib
 import json
 import logging
 import os
+import sys
 from collections import defaultdict
 from typing import Any, Callable, Dict, List, Optional
+
+# Ensure local repository source has higher priority than site-packages.
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
 
 from graph_of_thoughts import controller, language_models, operations, parser, prompter
 
@@ -588,11 +594,19 @@ def run_graphwiz_cot_eval(
 
         ensure_dir(os.path.join(run_dir, "graphs", routed_task))
 
-        lm = language_models.ChatGPT(
-            lm_config_path,
-            model_name=lm_name,
-            cache=use_cache,
-        )
+        lm_builder = getattr(language_models, "create_language_model", None)
+        if callable(lm_builder):
+            lm = lm_builder(
+                lm_config_path,
+                model_name=lm_name,
+                cache=use_cache,
+            )
+        else:
+            lm = language_models.ChatGPT(
+                lm_config_path,
+                model_name=lm_name,
+                cache=use_cache,
+            )
         before = snapshot_lm_usage(lm)
 
         operations_graph = build_cot_graph(routed_task)

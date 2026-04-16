@@ -5,13 +5,21 @@ import importlib
 import json
 import logging
 import os
+import sys
 from collections import defaultdict
 from typing import Any, Callable, Dict, List, Optional
+
+# Ensure local repository source has higher priority than site-packages.
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
 
 from graph_of_thoughts import controller, language_models
 
 try:
     from . import utils
+    from . import trajectory_exporter
+    from . import reward_builder
     from .graphwiz_got import (
         StrongStructuredGraphWizParser,
         StrongStructuredGraphWizPrompter,
@@ -20,6 +28,8 @@ try:
     )
 except ImportError:
     import utils
+    import trajectory_exporter
+    import reward_builder
     from graphwiz_got import (
         StrongStructuredGraphWizParser,
         StrongStructuredGraphWizPrompter,
@@ -399,6 +409,8 @@ def run_graphwiz_eval(
     data_root: str = "./data",
     prefer_local: bool = True,
     use_cache: bool = False,
+    export_parquet: bool = False,
+    alpha_tokens: float = 1e-6,
 ) -> str:
     """
     通用版 GraphWiz 统计脚本：
@@ -454,6 +466,8 @@ def run_graphwiz_eval(
                 "lm_name": lm_name,
                 "initial_budget": initial_budget,
                 "use_cache": use_cache,
+                "export_parquet": export_parquet,
+                "alpha_tokens": alpha_tokens,
                 "mode": "graphwiz_eval_generic",
             },
             f,
@@ -468,12 +482,14 @@ def run_graphwiz_eval(
     pricing = load_model_pricing(lm_config_path, lm_name)
 
     rows: List[Dict[str, Any]] = []
+    trajectories: List[Dict[str, Any]] = []
 
     total_prompt_tokens = 0
     total_completion_tokens = 0
     total_cost = 0.0
     correct_count = 0
     wrong_count = 0
+    total_reward = 0.0
 
     task_stats: Dict[str, Dict[str, Any]] = defaultdict(init_task_stats)
 
@@ -501,15 +517,28 @@ def run_graphwiz_eval(
 
         ensure_dir(os.path.join(run_dir, "graphs", routed_task))
 
-        lm = language_models.ChatGPT(
-            lm_config_path,
-            model_name=lm_name,
-            cache=use_cache,
-        )
+        lm_builder = getattr(language_models, "create_language_model", None)
+        if callable(lm_builder):
+            lm = lm_builder(
+                lm_config_path,
+                model_name=lm_name,
+                cache=use_cache,
+            )
+        else:
+            # Backward-compatible fallback for old installed package versions.
+            lm = language_models.ChatGPT(
+                lm_config_path,
+                model_name=lm_name,
+                cache=use_cache,
+            )
 
         before = snapshot_lm_usage(lm)
 
         operations_graph, task_prompter, task_parser = get_task_runtime(routed_task)
+        task_module = import_task_module(routed_task)
+        search_score_fn = getattr(task_module, "search_score", utils.graphwiz_format_score)
+        final_validator_fn = getattr(task_module, "final_validator", None)
+        ground_truth_fn = getattr(task_module, "ground_truth", None)
 
         logging.info(
             "Dispatch runtime sample_id=%s routed_task=%s graph=%s prompter=%s parser=%s",
@@ -574,6 +603,30 @@ def run_graphwiz_eval(
         final_answer = extract_final_answer_from_executor(executor)
         is_correct = evaluate_sample(sample, final_answer, routed_task=routed_task)
 
+        trajectory = trajectory_exporter.build_trajectory_record(
+            sample=sample,
+            routed_task=routed_task,
+            output_json_path=output_json_path,
+            query_history=getattr(lm, "query_history", []),
+            final_answer=final_answer,
+            is_correct=is_correct,
+            error_message=error_message,
+            prompt_tokens=prompt_delta,
+            completion_tokens=completion_delta,
+            cost=cost_delta,
+            search_score_fn=search_score_fn,
+            final_validator_fn=final_validator_fn,
+            ground_truth_fn=ground_truth_fn,
+        )
+        reward_info = reward_builder.compute_trajectory_reward(
+            trajectory, alpha_tokens=alpha_tokens
+        )
+        trajectory["reward"] = reward_info["reward"]
+        trajectory["reward_components"] = reward_info["components"]
+        trajectory["step_rewards"] = reward_builder.compute_step_level_shaping(trajectory)
+        trajectories.append(trajectory)
+        total_reward += float(reward_info["reward"])
+
         if is_correct:
             correct_count += 1
         else:
@@ -610,6 +663,7 @@ def run_graphwiz_eval(
                 "gold_answer": sample["answer"],
                 "output_json": output_json_path,
                 "error_message": error_message,
+                "reward": round(float(reward_info["reward"]), 6),
             }
         )
 
@@ -652,6 +706,7 @@ def run_graphwiz_eval(
                 "gold_answer",
                 "output_json",
                 "error_message",
+                "reward",
             ],
         )
         writer.writeheader()
@@ -716,11 +771,24 @@ def run_graphwiz_eval(
         "spent_budget": round(total_cost, 6),
         "remaining_budget": round(budget, 6),
         "total_cost": round(total_cost, 6),
+        "mean_reward": round((total_reward / num_samples_run) if num_samples_run else 0.0, 6),
         "csv_path": csv_path,
         "task_summary_path": task_summary_path,
         "task_csv_path": task_csv_path,
         "results_dir": run_dir,
     }
+
+    trajectories_jsonl_path = os.path.join(run_dir, "trajectories.jsonl")
+    trajectory_exporter.export_trajectories_jsonl(trajectories_jsonl_path, trajectories)
+    summary["trajectories_jsonl"] = trajectories_jsonl_path
+
+    if export_parquet:
+        trajectories_parquet_path = os.path.join(run_dir, "trajectories.parquet")
+        parquet_ok = trajectory_exporter.export_trajectories_parquet(
+            trajectories_parquet_path, trajectories
+        )
+        summary["trajectories_parquet"] = trajectories_parquet_path if parquet_ok else ""
+        summary["trajectories_parquet_exported"] = bool(parquet_ok)
 
     summary_path = os.path.join(run_dir, "summary.json")
     with open(summary_path, "w", encoding="utf-8") as f:
@@ -743,6 +811,8 @@ if __name__ == "__main__":
     parser_.add_argument("--budget", type=float, default=100.0)
     parser_.add_argument("--lm_name", type=str, default="chatgpt")
     parser_.add_argument("--use_cache", type=int, default=0)
+    parser_.add_argument("--export_parquet", type=int, default=0)
+    parser_.add_argument("--alpha_tokens", type=float, default=1e-6)
 
     args = parser_.parse_args()
 
@@ -761,4 +831,6 @@ if __name__ == "__main__":
         data_root=args.data_root,
         prefer_local=bool(args.prefer_local),
         use_cache=bool(args.use_cache),
+        export_parquet=bool(args.export_parquet),
+        alpha_tokens=args.alpha_tokens,
     )

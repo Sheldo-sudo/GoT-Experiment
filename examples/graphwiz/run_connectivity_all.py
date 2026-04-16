@@ -4,7 +4,13 @@ import datetime
 import json
 import logging
 import os
+import sys
 from typing import Any, Dict, List, Optional
+
+# Ensure local repository source has higher priority than site-packages.
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
 
 from graph_of_thoughts import controller, language_models
 
@@ -155,11 +161,19 @@ def run_connectivity_all(
 
         logging.info("Running connectivity sample idx=%s sample_id=%s", idx, sample["id"])
 
-        lm = language_models.ChatGPT(
-            lm_config_path,
-            model_name=lm_name,
-            cache=True,
-        )
+        lm_builder = getattr(language_models, "create_language_model", None)
+        if callable(lm_builder):
+            lm = lm_builder(
+                lm_config_path,
+                model_name=lm_name,
+                cache=True,
+            )
+        else:
+            lm = language_models.ChatGPT(
+                lm_config_path,
+                model_name=lm_name,
+                cache=True,
+            )
 
         before = snapshot_lm_usage(lm)
 

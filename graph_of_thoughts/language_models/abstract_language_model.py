@@ -11,6 +11,7 @@ from typing import List, Dict, Union, Any
 import json
 import os
 import logging
+from datetime import datetime, timezone
 
 
 class AbstractLanguageModel(ABC):
@@ -41,6 +42,8 @@ class AbstractLanguageModel(ABC):
         self.prompt_tokens: int = 0
         self.completion_tokens: int = 0
         self.cost: float = 0.0
+        # Query history is used by trajectory export and RL data preparation.
+        self.query_history: List[Dict[str, Any]] = []
 
     def load_config(self, path: str) -> None:
         """
@@ -63,7 +66,34 @@ class AbstractLanguageModel(ABC):
         """
         Clear the response cache.
         """
-        self.response_cache.clear()
+        if self.cache and hasattr(self, "response_cache"):
+            self.response_cache.clear()
+
+    def record_query_event(
+        self,
+        prompt: str,
+        responses: List[str],
+        num_responses: int = 1,
+        prompt_tokens_delta: int = 0,
+        completion_tokens_delta: int = 0,
+        cost_delta: float = 0.0,
+        meta: Dict[str, Any] = None,
+    ) -> None:
+        """
+        Record one model query event for downstream trajectory export.
+        """
+        event = {
+            "ts": datetime.now(timezone.utc).isoformat(),
+            "model_name": self.model_name,
+            "prompt": prompt,
+            "responses": responses,
+            "num_responses": int(num_responses),
+            "prompt_tokens_delta": int(prompt_tokens_delta),
+            "completion_tokens_delta": int(completion_tokens_delta),
+            "cost_delta": float(cost_delta),
+            "meta": meta or {},
+        }
+        self.query_history.append(event)
 
     @abstractmethod
     def query(self, query: str, num_responses: int = 1) -> Any:
