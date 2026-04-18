@@ -1,5 +1,6 @@
 {
-    "chatgpt" : {
+    "chatgpt": {
+        "backend": "remote_openai_compatible",
         "model_id": "gpt-3.5-turbo",
         "prompt_token_cost": 0.0015,
         "response_token_cost": 0.002,
@@ -9,7 +10,8 @@
         "organization": "",
         "api_key": ""
     },
-    "chatgpt4" : {
+    "chatgpt4": {
+        "backend": "remote_openai_compatible",
         "model_id": "gpt-4",
         "prompt_token_cost": 0.03,
         "response_token_cost": 0.06,
@@ -19,31 +21,72 @@
         "organization": "",
         "api_key": ""
     },
-    "llama7b-hf" : {
-        "model_id": "Llama-2-7b-chat-hf",
-        "cache_dir": "/llama",
+    "qwen_local_3b": {
+        "backend": "local_hf",
+        "model_path": "./models/Qwen2.5-3B-Instruct",
+        "tokenizer_path": "./models/Qwen2.5-3B-Instruct",
+        "device_map": "auto",
+        "torch_dtype": "bfloat16",
+        "max_new_tokens": 512,
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "do_sample": true,
         "prompt_token_cost": 0.0,
-        "response_token_cost": 0.0,
-        "temperature": 0.6,
-        "top_k": 10,
-        "max_tokens": 4096
+        "response_token_cost": 0.0
     },
-    "llama13b-hf" : {
-        "model_id": "Llama-2-13b-chat-hf",
-        "cache_dir": "/llama",
+    "qwen_local_4b": {
+        "backend": "local_hf",
+        "model_path": "./models/Qwen3-4B-Instruct",
+        "tokenizer_path": "./models/Qwen3-4B-Instruct",
+        "device_map": "auto",
+        "torch_dtype": "bfloat16",
+        "max_new_tokens": 512,
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "do_sample": true,
         "prompt_token_cost": 0.0,
-        "response_token_cost": 0.0,
-        "temperature": 0.6,
-        "top_k": 10,
-        "max_tokens": 4096
+        "response_token_cost": 0.0
     },
-    "llama70b-hf" : {
-        "model_id": "Llama-2-70b-chat-hf",
-        "cache_dir": "/llama",
-        "prompt_token_cost": 0.0,
-        "response_token_cost": 0.0,
+    "llama2_7b_chat": {
+        "backend": "local_hf",
+        "model_path": "./models/Llama-2-7b-chat-hf",
+        "tokenizer_path": "./models/Llama-2-7b-chat-hf",
+        "device_map": "auto",
+        "torch_dtype": "bfloat16",
+        "load_in_4bit": true,
+        "max_new_tokens": 512,
         "temperature": 0.6,
-        "top_k": 10,
-        "max_tokens": 4096
+        "top_p": 0.9,
+        "do_sample": true,
+        "prompt_token_cost": 0.0,
+        "response_token_cost": 0.0
+    },
+    "llama7b-hf": {
+        "backend": "local_hf",
+        "model_path": "./models/Llama-2-7b-hf",
+        "tokenizer_path": "./models/Llama-2-7b-hf",
+        "device_map": "auto",
+        "torch_dtype": "bfloat16",
+        "load_in_4bit": true,
+        "max_new_tokens": 512,
+        "temperature": 0.6,
+        "top_p": 0.9,
+        "do_sample": true,
+        "prompt_token_cost": 0.0,
+        "response_token_cost": 0.0
+    },
+    "llama13b-hf": {
+        "backend": "local_hf",
+        "model_path": "./models/Llama-2-13b-chat-hf",
+        "tokenizer_path": "./models/Llama-2-13b-chat-hf",
+        "device_map": "auto",
+        "torch_dtype": "bfloat16",
+        "load_in_4bit": true,
+        "max_new_tokens": 512,
+        "temperature": 0.6,
+        "top_p": 0.9,
+        "do_sample": true,
+        "prompt_token_cost": 0.0,
+        "response_token_cost": 0.0
     }
 }

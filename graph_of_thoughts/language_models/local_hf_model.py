@@ -2,7 +2,7 @@ import os
 from typing import Any, Dict, List, Union
 
 import torch
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 
 from .abstract_language_model import AbstractLanguageModel
 
@@ -47,6 +47,8 @@ class LocalHFModel(AbstractLanguageModel):
 
         self.prompt_token_cost: float = float(self.config.get("prompt_token_cost", 0.0))
         self.response_token_cost: float = float(self.config.get("response_token_cost", 0.0))
+        self.load_in_4bit: bool = bool(self.config.get("load_in_4bit", False))
+        self.load_in_8bit: bool = bool(self.config.get("load_in_8bit", False))
 
         self.tokenizer = AutoTokenizer.from_pretrained(
             self.tokenizer_path,
@@ -56,12 +58,36 @@ class LocalHFModel(AbstractLanguageModel):
         if self.tokenizer.pad_token_id is None:
             self.tokenizer.pad_token = self.tokenizer.eos_token
 
+        # Build quantization config if requested (required for large models on small VRAM)
+        quantization_config = None
+        load_dtype = self.torch_dtype
+        effective_device_map = self.device_map
+        if self.load_in_4bit:
+            quantization_config = BitsAndBytesConfig(
+                load_in_4bit=True,
+                bnb_4bit_quant_type="nf4",
+                bnb_4bit_use_double_quant=True,
+                bnb_4bit_compute_dtype=torch.bfloat16,
+                llm_int8_enable_fp32_cpu_offload=False,
+            )
+            load_dtype = None  # dtype is managed by BitsAndBytesConfig
+            # Force all layers onto GPU 0 — bitsandbytes 4-bit does not support CPU offload
+            effective_device_map = {"": 0}
+        elif self.load_in_8bit:
+            quantization_config = BitsAndBytesConfig(
+                load_in_8bit=True,
+                llm_int8_enable_fp32_cpu_offload=False,
+            )
+            load_dtype = None
+            effective_device_map = {"": 0}
+
         self.model = AutoModelForCausalLM.from_pretrained(
             self.model_path,
             trust_remote_code=True,
-            torch_dtype=self.torch_dtype,
-            device_map=self.device_map,
+            torch_dtype=load_dtype,
+            device_map=effective_device_map,
             use_safetensors=True,
+            quantization_config=quantization_config,
         )
         self.model.eval()
 
@@ -122,6 +148,9 @@ class LocalHFModel(AbstractLanguageModel):
             generated_ids = outputs[0][prompt_token_count:]
             text = self.tokenizer.decode(generated_ids, skip_special_tokens=True).strip()
             generations.append(self._truncate_at_stop(text))
+            # Free unused GPU memory between generation steps
+            del outputs
+            torch.cuda.empty_cache()
 
             completion_tokens = int(generated_ids.shape[-1])
             self.prompt_tokens += prompt_token_count

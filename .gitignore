@@ -30,3 +30,13 @@ env/
 
 # Config File
 **/config.json
+
+
+models/
+*.bin
+*.safetensors
+*.pt
+*.pth
+
+# 忽略 Claude 工作区等缓存
+.claude/
