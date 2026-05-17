@@ -1,0 +1,26 @@
+{
+  "method": "tot",
+  "tot_breadth": 3,
+  "tot_depth": 3,
+  "tasks": [
+    {
+      "method": "tot",
+      "task": "shortest_path",
+      "tot_breadth": 3,
+      "tot_depth": 3,
+      "n_samples": 400,
+      "n_correct": 0,
+      "accuracy": 0.0,
+      "avg_latency_s": 67.951,
+      "avg_lm_calls": 29.0,
+      "token_usage": {
+        "prompt_tokens": 17077004,
+        "completion_tokens": 1483342,
+        "total_tokens": 18560346
+      },
+      "timestamp": "20260506_104724",
+      "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_tot/results/tot/tot_shortest_path_20260506_104724.jsonl"
+    }
+  ],
+  "average_acc": 0.0
+}

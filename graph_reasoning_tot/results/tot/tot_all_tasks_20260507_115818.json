@@ -1,0 +1,26 @@
+{
+  "method": "tot",
+  "tot_breadth": 3,
+  "tot_depth": 3,
+  "tasks": [
+    {
+      "method": "tot",
+      "task": "topology",
+      "tot_breadth": 3,
+      "tot_depth": 3,
+      "n_samples": 400,
+      "n_correct": 0,
+      "accuracy": 0.0,
+      "avg_latency_s": 94.7838,
+      "avg_lm_calls": 29.0,
+      "token_usage": {
+        "prompt_tokens": 21026201,
+        "completion_tokens": 2396772,
+        "total_tokens": 23422973
+      },
+      "timestamp": "20260507_115818",
+      "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_tot/results/tot/tot_topology_20260507_115818.jsonl"
+    }
+  ],
+  "average_acc": 0.0
+}

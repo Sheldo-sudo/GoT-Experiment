@@ -1,0 +1,18 @@
+{
+  "method": "tot",
+  "task": "hamilton",
+  "tot_breadth": 3,
+  "tot_depth": 3,
+  "n_samples": 400,
+  "n_correct": 71,
+  "accuracy": 0.1775,
+  "avg_latency_s": 71.8681,
+  "avg_lm_calls": 28.98,
+  "token_usage": {
+    "prompt_tokens": 21081838,
+    "completion_tokens": 1623242,
+    "total_tokens": 22705080
+  },
+  "timestamp": "20260507_200640",
+  "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_tot/results/tot/tot_hamilton_20260507_200640.jsonl"
+}

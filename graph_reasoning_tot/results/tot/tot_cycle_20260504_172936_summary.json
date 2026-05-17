@@ -1,0 +1,18 @@
+{
+  "method": "tot",
+  "task": "cycle",
+  "tot_breadth": 3,
+  "tot_depth": 3,
+  "n_samples": 400,
+  "n_correct": 146,
+  "accuracy": 0.365,
+  "avg_latency_s": 83.1079,
+  "avg_lm_calls": 29.0,
+  "token_usage": {
+    "prompt_tokens": 15342407,
+    "completion_tokens": 2226792,
+    "total_tokens": 17569199
+  },
+  "timestamp": "20260504_172936",
+  "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_tot/results/tot/tot_cycle_20260504_172936.jsonl"
+}

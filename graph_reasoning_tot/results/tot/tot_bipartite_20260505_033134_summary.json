@@ -1,0 +1,18 @@
+{
+  "method": "tot",
+  "task": "bipartite",
+  "tot_breadth": 3,
+  "tot_depth": 3,
+  "n_samples": 400,
+  "n_correct": 64,
+  "accuracy": 0.16,
+  "avg_latency_s": 90.2934,
+  "avg_lm_calls": 29.0,
+  "token_usage": {
+    "prompt_tokens": 21936156,
+    "completion_tokens": 2182706,
+    "total_tokens": 24118862
+  },
+  "timestamp": "20260505_033134",
+  "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_tot/results/tot/tot_bipartite_20260505_033134.jsonl"
+}

@@ -1,0 +1,170 @@
+{
+  "method": "tot",
+  "tot_breadth": 3,
+  "tot_depth": 3,
+  "tasks": [
+    {
+      "method": "tot",
+      "task": "connectivity",
+      "tot_breadth": 3,
+      "tot_depth": 3,
+      "n_samples": 3,
+      "n_correct": 3,
+      "accuracy": 1.0,
+      "avg_latency_s": 0.0004,
+      "avg_lm_calls": 0.0,
+      "token_usage": {
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      },
+      "timestamp": "20260504_005042",
+      "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_tot/results/tot/tot_connectivity_20260504_005042.jsonl"
+    },
+    {
+      "method": "tot",
+      "task": "cycle",
+      "tot_breadth": 3,
+      "tot_depth": 3,
+      "n_samples": 3,
+      "n_correct": 3,
+      "accuracy": 1.0,
+      "avg_latency_s": 0.0004,
+      "avg_lm_calls": 0.0,
+      "token_usage": {
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      },
+      "timestamp": "20260504_005042",
+      "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_tot/results/tot/tot_cycle_20260504_005042.jsonl"
+    },
+    {
+      "method": "tot",
+      "task": "bipartite",
+      "tot_breadth": 3,
+      "tot_depth": 3,
+      "n_samples": 3,
+      "n_correct": 0,
+      "accuracy": 0.0,
+      "avg_latency_s": 0.005,
+      "avg_lm_calls": 0.0,
+      "token_usage": {
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      },
+      "timestamp": "20260504_005042",
+      "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_tot/results/tot/tot_bipartite_20260504_005042.jsonl"
+    },
+    {
+      "method": "tot",
+      "task": "shortest_path",
+      "tot_breadth": 3,
+      "tot_depth": 3,
+      "n_samples": 3,
+      "n_correct": 0,
+      "accuracy": 0.0,
+      "avg_latency_s": 0.0003,
+      "avg_lm_calls": 0.0,
+      "token_usage": {
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      },
+      "timestamp": "20260504_005042",
+      "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_tot/results/tot/tot_shortest_path_20260504_005042.jsonl"
+    },
+    {
+      "method": "tot",
+      "task": "triangle",
+      "tot_breadth": 3,
+      "tot_depth": 3,
+      "n_samples": 3,
+      "n_correct": 0,
+      "accuracy": 0.0,
+      "avg_latency_s": 0.0003,
+      "avg_lm_calls": 0.0,
+      "token_usage": {
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      },
+      "timestamp": "20260504_005042",
+      "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_tot/results/tot/tot_triangle_20260504_005042.jsonl"
+    },
+    {
+      "method": "tot",
+      "task": "subgraph",
+      "tot_breadth": 3,
+      "tot_depth": 3,
+      "n_samples": 3,
+      "n_correct": 3,
+      "accuracy": 1.0,
+      "avg_latency_s": 0.0003,
+      "avg_lm_calls": 0.0,
+      "token_usage": {
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      },
+      "timestamp": "20260504_005042",
+      "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_tot/results/tot/tot_subgraph_20260504_005042.jsonl"
+    },
+    {
+      "method": "tot",
+      "task": "hamilton",
+      "tot_breadth": 3,
+      "tot_depth": 3,
+      "n_samples": 3,
+      "n_correct": 2,
+      "accuracy": 0.6667,
+      "avg_latency_s": 0.0003,
+      "avg_lm_calls": 0.0,
+      "token_usage": {
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      },
+      "timestamp": "20260504_005042",
+      "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_tot/results/tot/tot_hamilton_20260504_005042.jsonl"
+    },
+    {
+      "method": "tot",
+      "task": "maximum_flow",
+      "tot_breadth": 3,
+      "tot_depth": 3,
+      "n_samples": 3,
+      "n_correct": 0,
+      "accuracy": 0.0,
+      "avg_latency_s": 0.0003,
+      "avg_lm_calls": 0.0,
+      "token_usage": {
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      },
+      "timestamp": "20260504_005042",
+      "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_tot/results/tot/tot_maximum_flow_20260504_005042.jsonl"
+    },
+    {
+      "method": "tot",
+      "task": "topology",
+      "tot_breadth": 3,
+      "tot_depth": 3,
+      "n_samples": 3,
+      "n_correct": 0,
+      "accuracy": 0.0,
+      "avg_latency_s": 0.0003,
+      "avg_lm_calls": 0.0,
+      "token_usage": {
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      },
+      "timestamp": "20260504_005042",
+      "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_tot/results/tot/tot_topology_20260504_005042.jsonl"
+    }
+  ],
+  "average_acc": 0.4074
+}

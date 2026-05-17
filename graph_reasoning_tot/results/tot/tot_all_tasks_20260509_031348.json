@@ -1,0 +1,26 @@
+{
+  "method": "tot",
+  "tot_breadth": 3,
+  "tot_depth": 3,
+  "tasks": [
+    {
+      "method": "tot",
+      "task": "subgraph",
+      "tot_breadth": 3,
+      "tot_depth": 3,
+      "n_samples": 400,
+      "n_correct": 133,
+      "accuracy": 0.3325,
+      "avg_latency_s": 94.8275,
+      "avg_lm_calls": 29.0,
+      "token_usage": {
+        "prompt_tokens": 14576381,
+        "completion_tokens": 1646176,
+        "total_tokens": 16222557
+      },
+      "timestamp": "20260509_031348",
+      "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_tot/results/tot/tot_subgraph_20260509_031348.jsonl"
+    }
+  ],
+  "average_acc": 0.3325
+}
