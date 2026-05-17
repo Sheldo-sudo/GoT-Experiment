@@ -1,0 +1,17 @@
+{
+  "method": "got",
+  "task": "bipartite",
+  "got_k": 3,
+  "n_samples": 400,
+  "n_correct": 63,
+  "accuracy": 0.1575,
+  "avg_latency_s": 24.1372,
+  "avg_lm_calls": 6.0,
+  "token_usage": {
+    "prompt_tokens": 4434924,
+    "completion_tokens": 550205,
+    "total_tokens": 4985129
+  },
+  "timestamp": "20260511_211409",
+  "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_got/results/got/got_bipartite_20260511_211409.jsonl"
+}

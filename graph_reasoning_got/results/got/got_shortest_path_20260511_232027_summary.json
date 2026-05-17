@@ -1,0 +1,17 @@
+{
+  "method": "got",
+  "task": "shortest_path",
+  "got_k": 3,
+  "n_samples": 400,
+  "n_correct": 0,
+  "accuracy": 0.0,
+  "avg_latency_s": 18.9435,
+  "avg_lm_calls": 6.0,
+  "token_usage": {
+    "prompt_tokens": 3507966,
+    "completion_tokens": 393662,
+    "total_tokens": 3901628
+  },
+  "timestamp": "20260511_232027",
+  "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_got/results/got/got_shortest_path_20260511_232027.jsonl"
+}

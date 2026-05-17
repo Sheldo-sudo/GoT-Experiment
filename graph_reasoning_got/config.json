@@ -1,0 +1,13 @@
+{
+    "model_path": "/home/wangzq28/GoT-Experiment/models/LLaMA2-7B-chat",
+    "method": "got",
+    "gpu_device": "1",
+    "dtype": "float16",
+    "max_new_tokens": 512,
+    "temperature": 0.1,
+    "result_dir": "results/got",
+    "tasks": [
+        "connectivity", "cycle", "bipartite", "shortest_path",
+        "triangle", "subgraph", "hamilton", "maximum_flow", "topology"
+    ]
+}

@@ -1,0 +1,17 @@
+{
+  "method": "got",
+  "task": "connectivity",
+  "got_k": 3,
+  "n_samples": 400,
+  "n_correct": 57,
+  "accuracy": 0.1425,
+  "avg_latency_s": 16.9388,
+  "avg_lm_calls": 6.0,
+  "token_usage": {
+    "prompt_tokens": 1982220,
+    "completion_tokens": 321927,
+    "total_tokens": 2304147
+  },
+  "timestamp": "20260511_152902",
+  "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_got/results/got/got_connectivity_20260511_152902.jsonl"
+}

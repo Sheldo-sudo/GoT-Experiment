@@ -1,0 +1,17 @@
+{
+  "method": "got",
+  "task": "triangle",
+  "got_k": 3,
+  "n_samples": 400,
+  "n_correct": 0,
+  "accuracy": 0.0,
+  "avg_latency_s": 30.9557,
+  "avg_lm_calls": 6.0,
+  "token_usage": {
+    "prompt_tokens": 2221034,
+    "completion_tokens": 739582,
+    "total_tokens": 2960616
+  },
+  "timestamp": "20260512_024650",
+  "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_got/results/got/got_triangle_20260512_024650.jsonl"
+}
