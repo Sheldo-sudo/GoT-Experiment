@@ -1,0 +1,15 @@
+{
+  "method": "cot",
+  "task": "subgraph",
+  "n_samples": 400,
+  "n_correct": 104,
+  "accuracy": 0.26,
+  "avg_latency_s": 5.9519,
+  "token_usage": {
+    "prompt_tokens": 729470,
+    "completion_tokens": 96360,
+    "total_tokens": 825830
+  },
+  "timestamp": "20260425_223446",
+  "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_cot/results/cot/cot_subgraph_20260425_223446.jsonl"
+}

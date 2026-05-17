@@ -1,0 +1,15 @@
+{
+  "method": "cot",
+  "task": "maximum_flow",
+  "n_samples": 400,
+  "n_correct": 0,
+  "accuracy": 0.0,
+  "avg_latency_s": 7.0782,
+  "token_usage": {
+    "prompt_tokens": 557489,
+    "completion_tokens": 118084,
+    "total_tokens": 675573
+  },
+  "timestamp": "20260425_235914",
+  "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_cot/results/cot/cot_maximum_flow_20260425_235914.jsonl"
+}

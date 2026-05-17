@@ -1,0 +1,15 @@
+{
+  "method": "cot",
+  "task": "connectivity",
+  "n_samples": 400,
+  "n_correct": 57,
+  "accuracy": 0.1425,
+  "avg_latency_s": 1.6332,
+  "token_usage": {
+    "prompt_tokens": 354723,
+    "completion_tokens": 24480,
+    "total_tokens": 379203
+  },
+  "timestamp": "20260425_182600",
+  "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_cot/results/cot/cot_connectivity_20260425_182600.jsonl"
+}

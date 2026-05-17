@@ -1,0 +1,141 @@
+{
+  "method": "cot",
+  "tasks": [
+    {
+      "method": "cot",
+      "task": "connectivity",
+      "n_samples": 400,
+      "n_correct": 57,
+      "accuracy": 0.1425,
+      "avg_latency_s": 1.6332,
+      "token_usage": {
+        "prompt_tokens": 354723,
+        "completion_tokens": 24480,
+        "total_tokens": 379203
+      },
+      "timestamp": "20260425_182600",
+      "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_cot/results/cot/cot_connectivity_20260425_182600.jsonl"
+    },
+    {
+      "method": "cot",
+      "task": "cycle",
+      "n_samples": 400,
+      "n_correct": 198,
+      "accuracy": 0.495,
+      "avg_latency_s": 8.4904,
+      "token_usage": {
+        "prompt_tokens": 513297,
+        "completion_tokens": 143793,
+        "total_tokens": 657090
+      },
+      "timestamp": "20260425_192236",
+      "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_cot/results/cot/cot_cycle_20260425_192236.jsonl"
+    },
+    {
+      "method": "cot",
+      "task": "bipartite",
+      "n_samples": 400,
+      "n_correct": 62,
+      "accuracy": 0.155,
+      "avg_latency_s": 8.4962,
+      "token_usage": {
+        "prompt_tokens": 782154,
+        "completion_tokens": 138687,
+        "total_tokens": 920841
+      },
+      "timestamp": "20260425_201915",
+      "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_cot/results/cot/cot_bipartite_20260425_201915.jsonl"
+    },
+    {
+      "method": "cot",
+      "task": "shortest_path",
+      "n_samples": 400,
+      "n_correct": 0,
+      "accuracy": 0.0,
+      "avg_latency_s": 4.5549,
+      "token_usage": {
+        "prompt_tokens": 632570,
+        "completion_tokens": 73651,
+        "total_tokens": 706221
+      },
+      "timestamp": "20260425_204937",
+      "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_cot/results/cot/cot_shortest_path_20260425_204937.jsonl"
+    },
+    {
+      "method": "cot",
+      "task": "triangle",
+      "n_samples": 400,
+      "n_correct": 0,
+      "accuracy": 0.0,
+      "avg_latency_s": 9.8197,
+      "token_usage": {
+        "prompt_tokens": 392332,
+        "completion_tokens": 169056,
+        "total_tokens": 561388
+      },
+      "timestamp": "20260425_215505",
+      "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_cot/results/cot/cot_triangle_20260425_215505.jsonl"
+    },
+    {
+      "method": "cot",
+      "task": "subgraph",
+      "n_samples": 400,
+      "n_correct": 104,
+      "accuracy": 0.26,
+      "avg_latency_s": 5.9519,
+      "token_usage": {
+        "prompt_tokens": 729470,
+        "completion_tokens": 96360,
+        "total_tokens": 825830
+      },
+      "timestamp": "20260425_223446",
+      "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_cot/results/cot/cot_subgraph_20260425_223446.jsonl"
+    },
+    {
+      "method": "cot",
+      "task": "hamilton",
+      "n_samples": 400,
+      "n_correct": 103,
+      "accuracy": 0.2575,
+      "avg_latency_s": 5.5882,
+      "token_usage": {
+        "prompt_tokens": 809659,
+        "completion_tokens": 89327,
+        "total_tokens": 898986
+      },
+      "timestamp": "20260425_231202",
+      "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_cot/results/cot/cot_hamilton_20260425_231202.jsonl"
+    },
+    {
+      "method": "cot",
+      "task": "maximum_flow",
+      "n_samples": 400,
+      "n_correct": 0,
+      "accuracy": 0.0,
+      "avg_latency_s": 7.0782,
+      "token_usage": {
+        "prompt_tokens": 557489,
+        "completion_tokens": 118084,
+        "total_tokens": 675573
+      },
+      "timestamp": "20260425_235914",
+      "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_cot/results/cot/cot_maximum_flow_20260425_235914.jsonl"
+    },
+    {
+      "method": "cot",
+      "task": "topology",
+      "n_samples": 400,
+      "n_correct": 0,
+      "accuracy": 0.0,
+      "avg_latency_s": 6.3501,
+      "token_usage": {
+        "prompt_tokens": 724573,
+        "completion_tokens": 103916,
+        "total_tokens": 828489
+      },
+      "timestamp": "20260426_004134",
+      "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_cot/results/cot/cot_topology_20260426_004134.jsonl"
+    }
+  ],
+  "average_acc": 0.1456
+}

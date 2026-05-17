@@ -1,0 +1,15 @@
+{
+  "method": "cot",
+  "task": "bipartite",
+  "n_samples": 400,
+  "n_correct": 62,
+  "accuracy": 0.155,
+  "avg_latency_s": 8.4962,
+  "token_usage": {
+    "prompt_tokens": 782154,
+    "completion_tokens": 138687,
+    "total_tokens": 920841
+  },
+  "timestamp": "20260425_201915",
+  "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_cot/results/cot/cot_bipartite_20260425_201915.jsonl"
+}

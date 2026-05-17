@@ -1,0 +1,15 @@
+{
+  "method": "cot",
+  "task": "cycle",
+  "n_samples": 400,
+  "n_correct": 198,
+  "accuracy": 0.495,
+  "avg_latency_s": 8.4904,
+  "token_usage": {
+    "prompt_tokens": 513297,
+    "completion_tokens": 143793,
+    "total_tokens": 657090
+  },
+  "timestamp": "20260425_192236",
+  "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_cot/results/cot/cot_cycle_20260425_192236.jsonl"
+}

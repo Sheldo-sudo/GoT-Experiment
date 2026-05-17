@@ -1,0 +1,15 @@
+{
+  "method": "cot",
+  "task": "hamilton",
+  "n_samples": 400,
+  "n_correct": 103,
+  "accuracy": 0.2575,
+  "avg_latency_s": 5.5882,
+  "token_usage": {
+    "prompt_tokens": 809659,
+    "completion_tokens": 89327,
+    "total_tokens": 898986
+  },
+  "timestamp": "20260425_231202",
+  "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_cot/results/cot/cot_hamilton_20260425_231202.jsonl"
+}

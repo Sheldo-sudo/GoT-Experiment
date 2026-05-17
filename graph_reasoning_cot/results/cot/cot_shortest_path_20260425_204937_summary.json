@@ -1,0 +1,15 @@
+{
+  "method": "cot",
+  "task": "shortest_path",
+  "n_samples": 400,
+  "n_correct": 0,
+  "accuracy": 0.0,
+  "avg_latency_s": 4.5549,
+  "token_usage": {
+    "prompt_tokens": 632570,
+    "completion_tokens": 73651,
+    "total_tokens": 706221
+  },
+  "timestamp": "20260425_204937",
+  "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_cot/results/cot/cot_shortest_path_20260425_204937.jsonl"
+}

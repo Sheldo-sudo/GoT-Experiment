@@ -1,0 +1,15 @@
+{
+  "method": "cot",
+  "task": "triangle",
+  "n_samples": 400,
+  "n_correct": 0,
+  "accuracy": 0.0,
+  "avg_latency_s": 9.8197,
+  "token_usage": {
+    "prompt_tokens": 392332,
+    "completion_tokens": 169056,
+    "total_tokens": 561388
+  },
+  "timestamp": "20260425_215505",
+  "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_cot/results/cot/cot_triangle_20260425_215505.jsonl"
+}

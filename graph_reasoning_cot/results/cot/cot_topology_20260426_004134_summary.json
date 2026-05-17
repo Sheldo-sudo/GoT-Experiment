@@ -1,0 +1,15 @@
+{
+  "method": "cot",
+  "task": "topology",
+  "n_samples": 400,
+  "n_correct": 0,
+  "accuracy": 0.0,
+  "avg_latency_s": 6.3501,
+  "token_usage": {
+    "prompt_tokens": 724573,
+    "completion_tokens": 103916,
+    "total_tokens": 828489
+  },
+  "timestamp": "20260426_004134",
+  "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_cot/results/cot/cot_topology_20260426_004134.jsonl"
+}
