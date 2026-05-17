@@ -1,0 +1,15 @@
+{
+  "method": "io",
+  "task": "hamilton",
+  "n_samples": 400,
+  "n_correct": 120,
+  "accuracy": 0.3,
+  "avg_latency_s": 2.4228,
+  "token_usage": {
+    "prompt_tokens": 806459,
+    "completion_tokens": 35405,
+    "total_tokens": 841864
+  },
+  "timestamp": "20260425_165608",
+  "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_io/results/io/io_hamilton_20260425_165608.jsonl"
+}

@@ -1,0 +1,15 @@
+{
+  "method": "io",
+  "task": "shortest_path",
+  "n_samples": 400,
+  "n_correct": 0,
+  "accuracy": 0.0,
+  "avg_latency_s": 2.7335,
+  "token_usage": {
+    "prompt_tokens": 629370,
+    "completion_tokens": 42442,
+    "total_tokens": 671812
+  },
+  "timestamp": "20260425_154548",
+  "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_io/results/io/io_shortest_path_20260425_154548.jsonl"
+}

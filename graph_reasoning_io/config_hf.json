@@ -1,0 +1,8 @@
+{
+    "model_path":     "/home/wangzq28/GoT-Experiment/models/LLaMA2-7B-chat",
+    "backend":        "hf",
+    "max_new_tokens": 64,
+    "temperature":    0.0,
+    "top_p":          1.0,
+    "gpu_device":     0
+}

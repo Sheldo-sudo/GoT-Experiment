@@ -1,0 +1,15 @@
+{
+  "method": "io",
+  "task": "maximum_flow",
+  "n_samples": 400,
+  "n_correct": 0,
+  "accuracy": 0.0,
+  "avg_latency_s": 5.4262,
+  "token_usage": {
+    "prompt_tokens": 554289,
+    "completion_tokens": 89725,
+    "total_tokens": 644014
+  },
+  "timestamp": "20260425_173219",
+  "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_io/results/io/io_maximum_flow_20260425_173219.jsonl"
+}

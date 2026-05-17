@@ -1,0 +1,15 @@
+{
+  "method": "io",
+  "task": "triangle",
+  "n_samples": 400,
+  "n_correct": 0,
+  "accuracy": 0.0,
+  "avg_latency_s": 2.2569,
+  "token_usage": {
+    "prompt_tokens": 389132,
+    "completion_tokens": 36676,
+    "total_tokens": 425808
+  },
+  "timestamp": "20260425_160051",
+  "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_io/results/io/io_triangle_20260425_160051.jsonl"
+}

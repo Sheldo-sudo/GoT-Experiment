@@ -1,0 +1,15 @@
+{
+  "method": "io",
+  "task": "bipartite",
+  "n_samples": 400,
+  "n_correct": 66,
+  "accuracy": 0.165,
+  "avg_latency_s": 4.501,
+  "token_usage": {
+    "prompt_tokens": 778954,
+    "completion_tokens": 70423,
+    "total_tokens": 849377
+  },
+  "timestamp": "20260425_152734",
+  "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_io/results/io/io_bipartite_20260425_152734.jsonl"
+}

@@ -1,0 +1,15 @@
+{
+  "method": "io",
+  "task": "subgraph",
+  "n_samples": 400,
+  "n_correct": 174,
+  "accuracy": 0.435,
+  "avg_latency_s": 5.8695,
+  "token_usage": {
+    "prompt_tokens": 726270,
+    "completion_tokens": 95276,
+    "total_tokens": 821546
+  },
+  "timestamp": "20260425_163959",
+  "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_io/results/io/io_subgraph_20260425_163959.jsonl"
+}

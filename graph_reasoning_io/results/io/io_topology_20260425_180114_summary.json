@@ -1,0 +1,15 @@
+{
+  "method": "io",
+  "task": "topology",
+  "n_samples": 400,
+  "n_correct": 0,
+  "accuracy": 0.0,
+  "avg_latency_s": 4.3367,
+  "token_usage": {
+    "prompt_tokens": 721373,
+    "completion_tokens": 69176,
+    "total_tokens": 790549
+  },
+  "timestamp": "20260425_180114",
+  "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_io/results/io/io_topology_20260425_180114.jsonl"
+}

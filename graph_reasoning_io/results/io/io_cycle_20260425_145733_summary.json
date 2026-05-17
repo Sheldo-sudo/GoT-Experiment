@@ -1,0 +1,15 @@
+{
+  "method": "io",
+  "task": "cycle",
+  "n_samples": 400,
+  "n_correct": 125,
+  "accuracy": 0.3125,
+  "avg_latency_s": 2.9148,
+  "token_usage": {
+    "prompt_tokens": 510097,
+    "completion_tokens": 46862,
+    "total_tokens": 556959
+  },
+  "timestamp": "20260425_145733",
+  "result_file": "/home/wangzq28/GoT-Experiment/graph_reasoning_io/results/io/io_cycle_20260425_145733.jsonl"
+}
